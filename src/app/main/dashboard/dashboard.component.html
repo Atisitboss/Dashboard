@@ -45,18 +45,17 @@
 
             <div fxLayout="column" fxLayoutAlign="start"
                  fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="start start">
-
-                <!-- Widget 2 -->
-                <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
+                <div *ngFor="let count of counts; let i = index" class="widget" fxFlex="100" fxFlex.gt-sm="33">
 
                     <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
 
                         <div class="p-16" fxLayout="row wrap" fxLayoutAlign="start end">
 
                             <div class="pr-16">
-                                <div class="h3 secondary-text">Good Product</div>
-                                <div class="font-size-54 font-weight-300 line-height-1 mt-8 green-fg">
-                                    {{widgets.widget2.conversion.value}}
+                                <div class="h3 secondary-text">{{count.label}}</div>
+                                <div class="font-size-54 font-weight-300 line-height-1 mt-8"
+                                     [style.color]="colors[i%3]">
+                                    {{count.value}}
                                 </div>
                             </div>
 
@@ -65,74 +64,30 @@
                     </div>
 
                 </div>
-                <!-- / Widget 2 -->
-
-                <!-- Widget 3 -->
-                <div class="widget" fxFlex="100" fxFlex.gt-sm="34">
-
-                    <div class="fuse-card auto-width mb-32" [ngClass.gt-sm]="'mb-0 mr-32'">
-
-                        <div class="p-16" fxLayout="row wrap" fxLayoutAlign="start end">
-
-                            <div class="pr-16">
-                                <div class="h3 secondary-text">defected Product</div>
-                                <div class="font-size-54 font-weight-300 line-height-1 mt-8 red-fg">
-                                    {{widgets.widget3.impressions.value}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- / Widget 3 -->
-
-                <!-- Widget 4 -->
-                <div class="widget" fxFlex="100" fxFlex.gt-sm="33">
-
-                    <div class="fuse-card auto-width">
-
-                        <div class="p-16" fxLayout="row wrap" fxLayoutAlign="start end">
-
-                            <div class="pr-16">
-                                <div class="h3 secondary-text">Total</div>
-                                <div class="font-size-54 font-weight-300 line-height-1 mt-8">
-                                    {{widgets.widget4.visits.value}}
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-                <!-- / Widget 4 -->
 
             </div>
 
             <div fxLayout="column" fxLayout.gt-sm="row">
 
-                <div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
+                <div class="mb-48" ngClass.xs="mr-0">
 
                     <div class="pb-24 font-size-18 font-weight-300">
                         What are OEE of Station?
                     </div>
 
-                    <div class="fuse-card full">
-
+                    <div *ngFor="let oee of oEEs; let i = index" class="fuse-card full">
+                        <div class="h2 text-center mt-12">{{oee.label}}</div>
+                        <div class="card-divider mb-0"></div>
                         <div class="h-260 w-100-p">
-                            <ngx-charts-pie-chart
+                            <ngx-charts-gauge
                                 *fuseIfOnDom
-                                [scheme]="widgets.widget7.scheme"
-                                [results]="widgets.widget7.devices"
-                                [doughnut]="true">
-                            </ngx-charts-pie-chart>
-<!--                            <ngx-charts-gauge-->
-<!--                                *fuseIfOnDom-->
-<!--                                startAngle="0"-->
-<!--                                angleSpan="360"-->
-<!--                                showAxis="false"-->
-<!--                                units="OEE"-->
-<!--                                [results]="[{name: 'OEE',value: 80}]">-->
-<!--                            </ngx-charts-gauge>-->
+                                startAngle="0"
+                                angleSpan="360"
+                                showAxis="false"
+                                units="OEE"
+                                [customColors]="customColors"
+                                [results]="[{name: oee.label,value: oee.value}]">
+                            </ngx-charts-gauge>
                         </div>
                         <div class="card-divider mb-0"></div>
                         <div class="px-16" fxLayout="row" fxLayoutAlign="space-between center">
@@ -152,106 +107,6 @@
                     </div>
 
                 </div>
-
-                <div class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
-
-                    <div class="pb-24 font-size-18 font-weight-300">
-                        How are your sales?
-                    </div>
-
-                    <div class="fuse-card full">
-
-                        <div class="light-blue-600">
-
-                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
-                                <div class="pr-16">
-                                    <div class="h1 font-weight-300">Sales</div>
-                                    <div class="h5 secondary-text">Lifetime sum of your sales</div>
-                                </div>
-
-                                <div>
-                                    <button mat-icon-button [matMenuTriggerFor]="card19Menu" aria-label="more">
-                                        <mat-icon>more_vert</mat-icon>
-                                    </button>
-
-                                    <mat-menu #card19Menu="matMenu">
-                                        <button mat-menu-item>
-                                            <mat-icon>trending_up</mat-icon>
-                                            <span>Trend</span>
-                                        </button>
-                                        <button mat-menu-item>
-                                            <mat-icon>history</mat-icon>
-                                            <span>History</span>
-                                        </button>
-                                        <button mat-menu-item>
-                                            <mat-icon>notifications_off</mat-icon>
-                                            <span>Disable alerts</span>
-                                        </button>
-                                    </mat-menu>
-                                </div>
-                            </div>
-
-                            <div class="p-16 pt-8" fxLayout="row" fxLayoutAlign="space-between end">
-                                <div class="font-size-48 font-weight-300 line-height-1">{{widgets.widget8.today}}</div>
-                                <div fxLayout="row" fxLayoutAlign="start center">
-                                    <mat-icon *ngIf="widgets.widget8.change.value > 0">trending_up</mat-icon>
-                                    <mat-icon *ngIf="widgets.widget8.change.value < 0">trending_down</mat-icon>
-                                    <div class="ml-8">{{widgets.widget8.change.value}}
-                                        ({{widgets.widget8.change.percentage}}%)
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <mat-tab-group backgroundColor="accent">
-                            <mat-tab label="1DAY">
-                                <div class="h-200 my-16">
-                                    <ngx-charts-line-chart
-                                        *fuseIfOnDom
-                                        [scheme]="widgets.widget8.scheme"
-                                        [results]="widgets.widget8.data"
-                                        [xAxis]="false"
-                                        [yAxis]="true"
-                                        [yScaleMin]="widgets.widget8.dataMin"
-                                        [yScaleMax]="widgets.widget8.dataMax">
-                                    </ngx-charts-line-chart>
-                                </div>
-                            </mat-tab>
-
-                            <mat-tab label="1WEEK">
-                                <div class="h-200 my-16">
-                                    <ngx-charts-line-chart
-                                        *fuseIfOnDom
-                                        [scheme]="widgets.widget8.scheme"
-                                        [results]="widgets.widget8.data"
-                                        [xAxis]="false"
-                                        [yAxis]="true"
-                                        [yScaleMin]="widgets.widget8.dataMin"
-                                        [yScaleMax]="widgets.widget8.dataMax">
-                                    </ngx-charts-line-chart>
-                                </div>
-                            </mat-tab>
-
-                            <mat-tab label="1MONTH">
-                                <div class="h-200 my-16">
-                                    <ngx-charts-line-chart
-                                        *fuseIfOnDom
-                                        [scheme]="widgets.widget8.scheme"
-                                        [results]="widgets.widget8.data"
-                                        [xAxis]="false"
-                                        [yAxis]="true"
-                                        [yScaleMin]="widgets.widget8.dataMin"
-                                        [yScaleMax]="widgets.widget8.dataMax">
-                                    </ngx-charts-line-chart>
-                                </div>
-                            </mat-tab>
-                        </mat-tab-group>
-
-                    </div>
-
-                </div>
-
 
             </div>
             <!-- Widget 5 -->
@@ -294,146 +149,146 @@
             <!-- / Widget 5 -->
         </div>
 
-<!--        <div class="right">-->
+        <!--        <div class="right">-->
 
-<!--            <div fxLayout="row" fxLayout.gt-md="column" class="w-100-p">-->
+        <!--            <div fxLayout="row" fxLayout.gt-md="column" class="w-100-p">-->
 
-<!--                <div fxFlex.gt-md="50" class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">-->
+        <!--                <div fxFlex.gt-md="50" class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">-->
 
-<!--                    <div class="pb-24 font-size-18 font-weight-300">-->
-<!--                        What are OEE of Station?-->
-<!--                    </div>-->
+        <!--                    <div class="pb-24 font-size-18 font-weight-300">-->
+        <!--                        What are OEE of Station?-->
+        <!--                    </div>-->
 
-<!--                    <div class="fuse-card">-->
+        <!--                    <div class="fuse-card">-->
 
-<!--                        <div class="h-300 w-100-p">-->
-<!--                            <ngx-charts-gauge-->
-<!--                                *fuseIfOnDom-->
-<!--                                [results]="[{name: 'OEE',value: 80}]">-->
-<!--                            </ngx-charts-gauge>-->
-<!--                        </div>-->
-<!--                        <div class="card-divider mb-0"></div>-->
-<!--                        <div class="px-16" fxLayout="row" fxLayoutAlign="space-between center">-->
-<!--                            <mat-form-field>-->
-<!--                                <mat-select class="simplified" value="7days">-->
-<!--                                    <mat-option value="today">Today</mat-option>-->
-<!--                                    <mat-option value="yesterday">Yesterday</mat-option>-->
-<!--                                    <mat-option value="7days">Last 7 days</mat-option>-->
-<!--                                    <mat-option value="28days">Last 28 days</mat-option>-->
-<!--                                    <mat-option value="90days">Last 90 days</mat-option>-->
-<!--                                </mat-select>-->
-<!--                            </mat-form-field>-->
+        <!--                        <div class="h-300 w-100-p">-->
+        <!--                            <ngx-charts-gauge-->
+        <!--                                *fuseIfOnDom-->
+        <!--                                [results]="[{name: 'OEE',value: 80}]">-->
+        <!--                            </ngx-charts-gauge>-->
+        <!--                        </div>-->
+        <!--                        <div class="card-divider mb-0"></div>-->
+        <!--                        <div class="px-16" fxLayout="row" fxLayoutAlign="space-between center">-->
+        <!--                            <mat-form-field>-->
+        <!--                                <mat-select class="simplified" value="7days">-->
+        <!--                                    <mat-option value="today">Today</mat-option>-->
+        <!--                                    <mat-option value="yesterday">Yesterday</mat-option>-->
+        <!--                                    <mat-option value="7days">Last 7 days</mat-option>-->
+        <!--                                    <mat-option value="28days">Last 28 days</mat-option>-->
+        <!--                                    <mat-option value="90days">Last 90 days</mat-option>-->
+        <!--                                </mat-select>-->
+        <!--                            </mat-form-field>-->
 
-<!--                            <button mat-button color="accent">OVERVIEW</button>-->
-<!--                        </div>-->
+        <!--                            <button mat-button color="accent">OVERVIEW</button>-->
+        <!--                        </div>-->
 
-<!--                    </div>-->
+        <!--                    </div>-->
 
-<!--                </div>-->
+        <!--                </div>-->
 
-<!--                <div fxFlex.gt-md="50" class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">-->
+        <!--                <div fxFlex.gt-md="50" class="mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">-->
 
-<!--                    <div class="pb-24 font-size-18 font-weight-300">-->
-<!--                        How are your sales?-->
-<!--                    </div>-->
+        <!--                    <div class="pb-24 font-size-18 font-weight-300">-->
+        <!--                        How are your sales?-->
+        <!--                    </div>-->
 
-<!--                    <div class="fuse-card">-->
+        <!--                    <div class="fuse-card">-->
 
-<!--                        <div class="light-blue-600">-->
+        <!--                        <div class="light-blue-600">-->
 
-<!--                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">-->
-<!--                                <div class="pr-16">-->
-<!--                                    <div class="h1 font-weight-300">Sales</div>-->
-<!--                                    <div class="h5 secondary-text">Lifetime sum of your sales</div>-->
-<!--                                </div>-->
+        <!--                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">-->
+        <!--                                <div class="pr-16">-->
+        <!--                                    <div class="h1 font-weight-300">Sales</div>-->
+        <!--                                    <div class="h5 secondary-text">Lifetime sum of your sales</div>-->
+        <!--                                </div>-->
 
-<!--                                <div>-->
-<!--                                    <button mat-icon-button [matMenuTriggerFor]="card19Menu" aria-label="more">-->
-<!--                                        <mat-icon>more_vert</mat-icon>-->
-<!--                                    </button>-->
+        <!--                                <div>-->
+        <!--                                    <button mat-icon-button [matMenuTriggerFor]="card19Menu" aria-label="more">-->
+        <!--                                        <mat-icon>more_vert</mat-icon>-->
+        <!--                                    </button>-->
 
-<!--                                    <mat-menu #card19Menu="matMenu">-->
-<!--                                        <button mat-menu-item>-->
-<!--                                            <mat-icon>trending_up</mat-icon>-->
-<!--                                            <span>Trend</span>-->
-<!--                                        </button>-->
-<!--                                        <button mat-menu-item>-->
-<!--                                            <mat-icon>history</mat-icon>-->
-<!--                                            <span>History</span>-->
-<!--                                        </button>-->
-<!--                                        <button mat-menu-item>-->
-<!--                                            <mat-icon>notifications_off</mat-icon>-->
-<!--                                            <span>Disable alerts</span>-->
-<!--                                        </button>-->
-<!--                                    </mat-menu>-->
-<!--                                </div>-->
-<!--                            </div>-->
+        <!--                                    <mat-menu #card19Menu="matMenu">-->
+        <!--                                        <button mat-menu-item>-->
+        <!--                                            <mat-icon>trending_up</mat-icon>-->
+        <!--                                            <span>Trend</span>-->
+        <!--                                        </button>-->
+        <!--                                        <button mat-menu-item>-->
+        <!--                                            <mat-icon>history</mat-icon>-->
+        <!--                                            <span>History</span>-->
+        <!--                                        </button>-->
+        <!--                                        <button mat-menu-item>-->
+        <!--                                            <mat-icon>notifications_off</mat-icon>-->
+        <!--                                            <span>Disable alerts</span>-->
+        <!--                                        </button>-->
+        <!--                                    </mat-menu>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
 
-<!--                            <div class="p-16 pt-8" fxLayout="row" fxLayoutAlign="space-between end">-->
-<!--                                <div class="font-size-48 font-weight-300 line-height-1">{{widgets.widget8.today}}</div>-->
-<!--                                <div fxLayout="row" fxLayoutAlign="start center">-->
-<!--                                    <mat-icon *ngIf="widgets.widget8.change.value > 0">trending_up</mat-icon>-->
-<!--                                    <mat-icon *ngIf="widgets.widget8.change.value < 0">trending_down</mat-icon>-->
-<!--                                    <div class="ml-8">{{widgets.widget8.change.value}}-->
-<!--                                        ({{widgets.widget8.change.percentage}}%)-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+        <!--                            <div class="p-16 pt-8" fxLayout="row" fxLayoutAlign="space-between end">-->
+        <!--                                <div class="font-size-48 font-weight-300 line-height-1">{{widgets.widget8.today}}</div>-->
+        <!--                                <div fxLayout="row" fxLayoutAlign="start center">-->
+        <!--                                    <mat-icon *ngIf="widgets.widget8.change.value > 0">trending_up</mat-icon>-->
+        <!--                                    <mat-icon *ngIf="widgets.widget8.change.value < 0">trending_down</mat-icon>-->
+        <!--                                    <div class="ml-8">{{widgets.widget8.change.value}}-->
+        <!--                                        ({{widgets.widget8.change.percentage}}%)-->
+        <!--                                    </div>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
 
-<!--                        </div>-->
+        <!--                        </div>-->
 
-<!--                        <mat-tab-group backgroundColor="accent">-->
-<!--                            <mat-tab label="1DAY">-->
-<!--                                <div class="h-200 my-16">-->
-<!--                                    <ngx-charts-line-chart-->
-<!--                                        *fuseIfOnDom-->
-<!--                                        [scheme]="widgets.widget8.scheme"-->
-<!--                                        [results]="widgets.widget8.data"-->
-<!--                                        [xAxis]="false"-->
-<!--                                        [yAxis]="true"-->
-<!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
-<!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
-<!--                                    </ngx-charts-line-chart>-->
-<!--                                </div>-->
-<!--                            </mat-tab>-->
+        <!--                        <mat-tab-group backgroundColor="accent">-->
+        <!--                            <mat-tab label="1DAY">-->
+        <!--                                <div class="h-200 my-16">-->
+        <!--                                    <ngx-charts-line-chart-->
+        <!--                                        *fuseIfOnDom-->
+        <!--                                        [scheme]="widgets.widget8.scheme"-->
+        <!--                                        [results]="widgets.widget8.data"-->
+        <!--                                        [xAxis]="false"-->
+        <!--                                        [yAxis]="true"-->
+        <!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
+        <!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
+        <!--                                    </ngx-charts-line-chart>-->
+        <!--                                </div>-->
+        <!--                            </mat-tab>-->
 
-<!--                            <mat-tab label="1WEEK">-->
-<!--                                <div class="h-200 my-16">-->
-<!--                                    <ngx-charts-line-chart-->
-<!--                                        *fuseIfOnDom-->
-<!--                                        [scheme]="widgets.widget8.scheme"-->
-<!--                                        [results]="widgets.widget8.data"-->
-<!--                                        [xAxis]="false"-->
-<!--                                        [yAxis]="true"-->
-<!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
-<!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
-<!--                                    </ngx-charts-line-chart>-->
-<!--                                </div>-->
-<!--                            </mat-tab>-->
+        <!--                            <mat-tab label="1WEEK">-->
+        <!--                                <div class="h-200 my-16">-->
+        <!--                                    <ngx-charts-line-chart-->
+        <!--                                        *fuseIfOnDom-->
+        <!--                                        [scheme]="widgets.widget8.scheme"-->
+        <!--                                        [results]="widgets.widget8.data"-->
+        <!--                                        [xAxis]="false"-->
+        <!--                                        [yAxis]="true"-->
+        <!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
+        <!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
+        <!--                                    </ngx-charts-line-chart>-->
+        <!--                                </div>-->
+        <!--                            </mat-tab>-->
 
-<!--                            <mat-tab label="1MONTH">-->
-<!--                                <div class="h-200 my-16">-->
-<!--                                    <ngx-charts-line-chart-->
-<!--                                        *fuseIfOnDom-->
-<!--                                        [scheme]="widgets.widget8.scheme"-->
-<!--                                        [results]="widgets.widget8.data"-->
-<!--                                        [xAxis]="false"-->
-<!--                                        [yAxis]="true"-->
-<!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
-<!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
-<!--                                    </ngx-charts-line-chart>-->
-<!--                                </div>-->
-<!--                            </mat-tab>-->
-<!--                        </mat-tab-group>-->
+        <!--                            <mat-tab label="1MONTH">-->
+        <!--                                <div class="h-200 my-16">-->
+        <!--                                    <ngx-charts-line-chart-->
+        <!--                                        *fuseIfOnDom-->
+        <!--                                        [scheme]="widgets.widget8.scheme"-->
+        <!--                                        [results]="widgets.widget8.data"-->
+        <!--                                        [xAxis]="false"-->
+        <!--                                        [yAxis]="true"-->
+        <!--                                        [yScaleMin]="widgets.widget8.dataMin"-->
+        <!--                                        [yScaleMax]="widgets.widget8.dataMax">-->
+        <!--                                    </ngx-charts-line-chart>-->
+        <!--                                </div>-->
+        <!--                            </mat-tab>-->
+        <!--                        </mat-tab-group>-->
 
-<!--                    </div>-->
+        <!--                    </div>-->
 
-<!--                </div>-->
+        <!--                </div>-->
 
 
-<!--            </div>-->
+        <!--            </div>-->
 
-<!--        </div>-->
+        <!--        </div>-->
 
     </div>
 

@@ -8,9 +8,9 @@
     <mat-divider cdkFocusRegionEnd></mat-divider>
 
     <mat-nav-list class="border-bottom pt-0">
-        <a *ngFor="let station of stations" mat-list-item (click)="onUrl()" [routerLink]="station.url" routerLinkActive="accent">
+        <a *ngFor="let station of stations" mat-list-item (click)="onUrl()" [routerLink]="'/dashboard/'+station" routerLinkActive="accent">
             <h3 matSubheader class="w-100-p">
-                <span>{{station.name}}</span>
+                <span>{{station}}</span>
             </h3>
         </a>
     </mat-nav-list>

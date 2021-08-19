@@ -1,32 +1,65 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fuseAnimations } from '@fuse/animations';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {fuseAnimations} from '@fuse/animations';
 import {Widgets} from './dashboard.data';
 import {ActivatedRoute} from '@angular/router';
-import { map } from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from 'environments/environment';
 
 @Component({
-    selector   : 'dashboard',
+    selector: 'dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls  : ['./dashboard.component.scss'],
+    styleUrls: ['./dashboard.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
 export class DashboardComponent implements OnInit {
     widgets = Widgets;
-    widget1SelectedYear = '2016';
-    widget5SelectedDay = 'today';
     machine: any;
-
-    constructor(private activatedRoute: ActivatedRoute) {
+    counts: any[];
+    colors: string[] = [
+        '#30C5FF', '#B61919', '#5C946E',
+    ];
+    oEEs: any[];
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private http: HttpClient,
+    ) {
         this._registerCustomChartJSPlugin();
     }
 
-
     ngOnInit(): void {
-        this.machine = this.activatedRoute.params.pipe(map(m => m.id));
-        // this.activatedRoute.params.subscribe(console.log);
+        this.activatedRoute.params.subscribe((params) => {
+            if (params.id) {
+                this.loadCounts(params.id);
+                this.loadOEEs(params.id);
+            }
+        });
+
     }
 
+    loadCounts(id: number): void {
+        this.http.get(`${environment.api}/count/${id}/`,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                })
+            }).subscribe((res: any) => {
+            this.counts = res.data;
+        });
+    }
+
+    loadOEEs(id: number): void {
+        this.http.get(`${environment.api}/oee/${id}/`,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                })
+            }).subscribe((res: any) => {
+            this.oEEs = res.data;
+        });
+    }
+
+    customColors = (index) => this.colors[0];
 
     private _registerCustomChartJSPlugin(): void {
         (window as any).Chart.plugins.register({

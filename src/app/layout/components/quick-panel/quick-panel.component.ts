@@ -1,6 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {Router} from '@angular/router';
-import {FuseSidebarService} from '../../../../@fuse/components/sidebar/sidebar.service';
+import {FuseSidebarService} from '@fuse/components/sidebar/sidebar.service';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from 'environments/environment';
 
 @Component({
     selector: 'quick-panel',
@@ -13,22 +14,14 @@ export class QuickPanelComponent {
     events: any[];
     notes: any[];
     settings: any;
-    stations: any[] = [
-        {
-            name: 'PU2001',
-            url: '/dashboard/pu2001'
-        },
-        {
-            name: 'PU2001',
-            url: '/dashboard/pu2002'
-        },
-    ];
+    stations: any[];
 
     /**
      * Constructor
      */
     constructor(
         private _fuseSidebarService: FuseSidebarService,
+        private http: HttpClient,
     ) {
         // Set the defaults
         this.date = new Date();
@@ -37,6 +30,19 @@ export class QuickPanelComponent {
             cloud: false,
             retro: true
         };
+        this.onLoadStations();
+    }
+
+    onLoadStations(): void {
+        this.http.get(`${environment.api}/station/`,
+            {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                })
+            }
+        ).subscribe((res: any) => {
+            this.stations = res.data;
+        });
     }
 
     onUrl(): void {
