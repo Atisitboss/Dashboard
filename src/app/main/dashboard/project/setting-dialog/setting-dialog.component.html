@@ -1,0 +1,24 @@
+<div class="setting-dialog">
+    <h1>Settings</h1>
+
+    <div class="topic-selection" fxLayout="row" fxLayoutAlign="space-around center">
+        <h4>Select Topic: </h4>
+        <mat-form-field appearance="fill" style="width: 65%;">
+            <mat-label>Topic</mat-label>
+            <mat-select [(value)]="data.selected">
+                <mat-option value="None">None</mat-option>
+                <mat-optgroup *ngFor="let topic of topics" [label]="topic.name" [disabled]="topic.disabled">
+                    <mat-option *ngFor="let subTopic of topic.groupValue" [value]="subTopic.value">
+                      {{subTopic.stationname}}
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div class="finalization" fxLayout="row" fxLayoutAlign="end end">
+        <button mat-stroked-button style="border-radius: 25px;" (click)="cancel()">Cancel</button>
+        <button mat-stroked-button style="border-radius: 25px; margin-left: 20px;" (click)="submit()">Submit</button>
+    </div>
+    
+</div>

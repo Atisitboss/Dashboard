@@ -682,6 +682,11 @@ const matColors = {
         contrast: {
             500: 'white'
         }
+    },
+
+    'fuse-custom': {
+        100: '#354F52',
+        200: '#2F3E46'
     }
 };
 

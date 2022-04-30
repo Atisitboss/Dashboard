@@ -76,12 +76,12 @@ export class ToolbarComponent implements OnInit, OnDestroy
                 id   : 'en',
                 title: 'English',
                 flag : 'us'
-            },
-            {
-                id   : 'tr',
-                title: 'Turkish',
-                flag : 'tr'
             }
+            // {
+            //     id   : 'tr',
+            //     title: 'Turkish',
+            //     flag : 'tr'
+            // }
         ];
 
         this.navigation = navigation;
@@ -134,6 +134,29 @@ export class ToolbarComponent implements OnInit, OnDestroy
     toggleSidebarOpen(key): void
     {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
+    }
+
+    toggleSidebarOpened(): void
+    {
+        this._fuseSidebarService.getSidebar('navbar').toggleOpen();
+    }
+
+    /**
+     * Toggle sidebar folded status
+     */
+    toggleSidebarFolded(): void
+    {
+        this._fuseSidebarService.getSidebar('navbar').toggleFold();
+    }
+
+    /* Full Screen */
+    elem = document.documentElement;
+    fullScreen() {
+        if(this.elem.requestFullscreen)
+            this.elem.requestFullscreen();
+        else if(document.exitFullscreen)
+            document.exitFullscreen();
+
     }
 
     /**

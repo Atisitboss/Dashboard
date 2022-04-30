@@ -1,0 +1,661 @@
+<div id="dashboard-analytics" class="page-layout blank">
+
+    <div id="station-selection" *ngIf="currentRoute === ''">
+
+        <!-- BOARDS -->
+        <div id="boards" class="fuse-navy" fxLayout="column" fxLayoutAlign="start center" fxFlex fusePerfectScrollbar>
+
+            <div class="header pt-44 pt-md-44" fxLayout="row" fxLayoutAlign="center center" fxFlex="0 0 auto"
+                [@animate]="{value:'*',params:{delay:'100ms'}}">
+                <h1>Dashboard Analytics</h1>
+            </div>
+
+            <div class="header pt-22 pt-md-22" fxLayout="row" fxLayoutAlign="center center" fxFlex="0 0 auto"
+                [@animate]="{value:'*',params:{delay:'100ms'}}">
+                <h2>Select a Station</h2>
+            </div>
+
+            <!-- BOARD LIST -->
+            <div class="board-list" fxFlex="0 0 auto" fxLayout="row wrap" fxLayoutAlign="center center"
+                [@animateStagger]="{value:'50'}">
+
+                <div class="board-list-item" *ngFor="let station of stations"
+                    fxLayout="column" fxLayoutAlign="center center"
+                    [routerLink]="'/dashboard/analytics/station'+station.id"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    <mat-icon class="s-56">settings</mat-icon>
+                    <div class="board-name" style="font-weight: 700;">Station No. {{station.id}} {{station.name}}</div>
+                </div>
+
+                <!-- NEW BOARD BUTTON -->
+                <button class="board-list-item add-new-board" fxLayout="column" fxLayoutAlign="center center"
+                    (click)="createNewStation()"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    <mat-icon class="s-56">add_circle</mat-icon>
+                    <div class="board-name">Add new station</div>
+                </button>
+                <!-- / NEW BOARD BUTTON -->
+
+            </div>
+            <!-- / BOARD LIST -->
+        </div>
+        <!-- / BOARDS -->
+    </div>
+
+    <div class="container">
+
+        <!-- Dyanmic template -->
+        <div class="station-template" *ngFor="let station of stations">
+
+            <div class="template-container" *ngIf="currentRoute === 'station' + station.id">
+
+                <!-- Header -->
+                <div class="station-header" fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div class="main-widget" fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button
+                            class="back-button pr-20"
+                            [routerLink]="'/dashboard/analytics'">
+                            <mat-icon>arrow_back_ios</mat-icon>
+                        </button>
+
+                        <h2 style="margin-left: 5px;">Station No.</h2>
+
+                        <div class="main-widget-station-name" *ngFor="let station of stations">
+                            <h2 style="margin-left: 5px;" *ngIf="currentRoute === 'station' + station.id + ''">{{station.id}}: {{station.name}}</h2>
+                        </div>
+
+                    </div>
+
+                    <div class="main-widget-tools" fxLayout="row" fxLayoutAlign="end center">
+
+                        <div class="datepicker" *ngIf="currentRoute === 'station' + station.id">
+                            <mat-form-field class="example-full-width mr-40" appearance="outline">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [value]="date.value" [matDatepicker]="picker" (dateChange)="eventDateChange($event)">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker panelClass="datepickerStation"></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /End of header -->
+
+                <div class="station-content">
+
+                    <div class="content-body p-24" fxLayout="column" fxLayoutAlign="space-between">
+
+                        <div class="header">
+                            <span style="font-weight: bold; font-size: x-large;">Analytics Dashboard</span><br>
+                            <span>Displays, distribution, and statistics of the products</span>
+                        </div>
+
+                        <br>
+                    
+                        <!-- Number Displays -->
+                        <div class="number-displays">
+
+                            <div *ngIf="stationName === 'PU2001' || stationName === 'PU2003' ||
+                                    stationName === 'Lasting In' || stationName === 'Lasting Out'">
+
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" style="text-align: center; margin-top: 20px;">
+
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                                            fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                                            
+                                        <div class="fuse-widget-front">
+                                            <div class="pl-16 pr-8 py-16 h-52" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                <div class="h2">Total</div>
+            
+                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                        aria-label="more">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </div>
+            
+                                            <div class="pt-8 pb-16" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="orange-fg font-size-72 line-height-72 font-weight-900">
+                                                    {{total}}
+                                                </div>
+                                                <div class="orange-fg font-size-20">
+                                                    items
+                                                </div>
+                                            </div>
+            
+                                            <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="space-evenly center">
+                                                <div style="font-size: small; font-weight: lighter;">Last Updated:</div>
+                                                <div style="margin-left: 2.5px;">{{valueDate}} {{total_lastUpdated}}</div>
+                                            </div>
+                                        </div>
+            
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                    aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+            
+                                            <div>
+                                                Test no. of stations
+                                            </div>
+                                        </div>
+            
+                                    </fuse-widget>
+            
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                                            fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                                            
+                                        <div class="fuse-widget-front">
+                                            <div class="pl-16 pr-8 py-16 h-52" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                <div class="h2">{{valueOneLabel}}</div>
+            
+                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                        aria-label="more">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </div>
+            
+                                            <div class="pt-8 pb-16" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="green-fg font-size-72 line-height-72 font-weight-900">
+                                                    {{totalValueOne}}
+                                                </div>
+                                                <div class="green-fg font-size-20">
+                                                    items
+                                                </div>
+                                            </div>
+            
+                                            <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="space-evenly center">
+                                                <div style="font-size: small; font-weight: lighter;">Last Updated:</div>
+                                                <div style="margin-left: 2.5px;">{{valueDate}} {{totalValueOne_lastUpdated}}</div>
+                                            </div>
+                                        </div>
+            
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                    aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+            
+                                            <div>
+                                            </div>
+                                        </div>
+            
+                                    </fuse-widget>
+            
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                                            fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                                            
+                                        <div class="fuse-widget-front">
+                                            <div class="pl-16 pr-8 py-16 h-52" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                <div class="h2">{{valueTwoLabel}}</div>
+            
+                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                        aria-label="more">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </div>
+            
+                                            <div class="pt-8 pb-16" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="red-fg font-size-72 line-height-72 font-weight-900">
+                                                    {{totalValueTwo}}
+                                                </div>
+                                                <div class="red-fg font-size-20">
+                                                    items
+                                                </div>
+                                            </div>
+            
+                                            <div class="p-16 border-top" fxLayout="row" fxLayoutAlign="space-evenly center">
+                                                <div style="font-size: small; font-weight: lighter;">Last Updated:</div>
+                                                <div style="margin-left: 2.5px;">{{valueDate}} {{totalValueTwo_lastUpdated}}</div>
+                                            </div>
+                                        </div>
+            
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                    aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+            
+                                            <div>
+                                            </div>
+                                        </div>
+            
+                                    </fuse-widget>
+            
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="stationName === 'Hot Oven' || stationName === 'Cold Oven'">
+
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" style="text-align: center; margin-top: 20px;">
+                                
+                                    <!-- Card 1 -->
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                                        fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                                        
+                                        <div class="fuse-widget-front">
+                                            <div class="pl-16 pr-8 py-16 h-52" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                <div class="h2">Maximum Temperature</div>
+
+                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                        aria-label="more">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </div>
+
+                                            <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="red-fg font-size-50 line-height-50 font-weight-900">
+                                                    {{maxTemp}} °C
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Front -->
+
+                                        <!-- Back -->
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                    aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+
+                                            <div>
+                                            </div>
+                                        </div>
+                                        <!-- /Back -->
+                                    </fuse-widget>
+
+                                    <!-- Card 2 -->
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget" fxLayout="column"
+                                            fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25">
+                                            
+                                        <div class="fuse-widget-front">
+                                            <div class="pl-16 pr-8 py-16 h-52" fxLayout="row"
+                                                    fxLayoutAlign="space-between center">
+                                                <div class="h2">Minimum Temperature</div>
+
+                                                <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                        aria-label="more">
+                                                    <mat-icon>more_vert</mat-icon>
+                                                </button>
+                                            </div>
+
+                                            <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center">
+                                                <div class="blue-fg font-size-50 line-height-50 font-weight-900">
+                                                    {{minTemp}} °C
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- /Front -->
+
+                                        <!-- Back -->
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                    aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+
+                                            <div>
+                                            </div>
+                                        </div>
+                                        <!-- /Back -->
+                                    </fuse-widget>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- /End of Number Displays -->
+
+                        <br>
+
+                        <!-- Distribution Displays -->
+                        <div class="visualization mb-48" [ngClass.lt-lg]="'mr-32'" [ngClass.xs]="'mr-0'">
+
+                            <div *ngIf="stationName === 'PU2001' || stationName === 'PU2003' ||
+                                stationName === 'Lasting In' || stationName === 'Lasting Out'">
+
+                                <div class="graph-visualization">
+        
+                                    <div class="p-20">
+                                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                                            <div>
+                                                <span class="h1 font-weight-300" style="font-weight: bold; font-size: large;">
+                                                    Distribution
+                                                </span><br>
+                                                <span>
+                                                    Demographics quantity of your products 
+                                                </span>
+                                            </div>
+        
+                                            <div>
+                                                <button mat-stroked-button [matMenuTriggerFor]="menu1" style="border-radius: 25px;">
+                                                    <span>{{selectedDistributionType}}</span>
+                                                </button>
+                                                <mat-menu #menu1="matMenu">
+                                                    <button mat-menu-item value="Standard Pie Chart" (click)="viewBarChartOption1('Standard Pie Chart')">Standard Pie Chart</button>
+                                                    <button mat-menu-item value="Pie Grid Chart" (click)="viewBarChartOption1('Pie Grid Chart')">Pie Grid Chart</button>
+                                                    <button mat-menu-item value="Advanced Pie Chart" (click)="viewBarChartOption1('Advanced Pie Chart')">Advanced Pie Chart</button>
+                                                </mat-menu>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <mat-divider></mat-divider>
+        
+                                    <div style="margin-top: 25px;">
+                                        <div class="h-300" *ngIf="selectedDistributionType === 'Standard Pie Chart'">
+                                            <ngx-charts-pie-chart
+                                                *fuseIfOnDom
+                                                [scheme]="distributionScheme"
+                                                [results]="pieChart"
+                                                [legend]="showLegend"
+                                                [labels]="showLabels"
+                                                [doughnut]="true">
+                                            </ngx-charts-pie-chart>
+                                        </div>
+        
+                                        <div class="h-250" *ngIf="selectedDistributionType === 'Pie Grid Chart'" fxLayout="row" fxLayoutAlign="space-around center">
+                                            <ngx-charts-pie-grid
+                                                *fuseIfOnDom
+                                                [scheme]="distributionScheme"
+                                                [results]="pieChart"
+                                                [view]="view">
+                                            </ngx-charts-pie-grid>
+                                        </div>
+        
+                                        <div class="h-250" *ngIf="selectedDistributionType === 'Advanced Pie Chart'" fxLayout="row" fxLayoutAlign="center center">
+                                            <div>
+                                                <ngx-charts-advanced-pie-chart
+                                                    *fuseIfOnDom
+                                                    [scheme]="distributionScheme"
+                                                    [results]="pieChart"
+                                                    [view]="view">
+                                                </ngx-charts-advanced-pie-chart>
+                                            </div>
+                            
+                                            <div>
+                                                <ngx-charts-number-card
+                                                    [view]="view"
+                                                    [scheme]="distributionScheme"
+                                                    [results]="pieChart"
+                                                    [cardColor]="cardColor">
+                                                </ngx-charts-number-card>
+                                            </div>
+                                        </div>
+
+                                    </div>
+        
+                                </div>
+
+                                <br>
+
+                                <div class="timeperiods-section" fxLayout="row" fxLayoutAlign="space-between center">
+
+                                    <div class="timeperiods-chart" fxFlex="55">
+        
+                                        <div class="p-20">
+                                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                <div>
+                                                    <span style="font-weight: bold; font-size: large;">
+                                                        Time Periods
+                                                    </span><br>
+                                                    <span>Hourly statistical summary of this station</span>
+                                                </div>
+        
+                                                <div>
+                                                    <button mat-stroked-button [matMenuTriggerFor]="menu2" style="border-radius: 25px; background-color: white;">
+                                                        {{selectedTimePeriodsType}}
+                                                    </button>
+                                                    <mat-menu #menu2="matMenu">
+                                                        <button mat-menu-item value="Stacked Bar Chart" (click)="viewBarChartOption2('Stacked Bar Chart')">Stacked Bar Chart</button>
+                                                        <button mat-menu-item value="Grouped Bar Chart" (click)="viewBarChartOption2('Grouped Bar Chart')">Grouped Bar Chart</button>
+                                                        <button mat-menu-item value="Line Chart" (click)="viewBarChartOption2('Line Chart')">Line Chart</button>
+                                                    </mat-menu>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="graph-visualization">
+        
+                                            <div class="p-20"></div>
+        
+                                            <div class="h-500" fxLayout="row" fxLayoutAlign="center center">
+                                                <ngx-charts-bar-vertical-stacked
+                                                    [scheme]="timePeriodsScheme"
+                                                    [results]="barChart"
+                                                    [xAxis]="showXAxis"
+                                                    [yAxis]="showYAxis"
+                                                    [showXAxisLabel]="showXAxisLabel"
+                                                    [showYAxisLabel]="showYAxisLabel"
+                                                    [legend]="showLegend">
+                                                    <ng-template #tooltipTemplate let-model="model">
+                                                        <span>
+                                                            {{model.name}}: {{model.value}}
+                                                        </span>
+                                                    </ng-template>
+                                                </ngx-charts-bar-vertical-stacked>
+                                            </div>
+        
+                                            <div class="h-500" *ngIf="selectedTimePeriodsType === 'Grouped Bar Chart'">
+                                                <ngx-charts-bar-vertical-2d
+                                                    [scheme]="timePeriodsScheme"
+                                                    [results]="barChart"
+                                                    [xAxis]="showXAxis"
+                                                    [yAxis]="showYAxis"
+                                                    [showXAxisLabel]="showXAxisLabel"
+                                                    [showYAxisLabel]="showYAxisLabel"
+                                                    [legend]="showLegend">
+                                                </ngx-charts-bar-vertical-2d>
+                                            </div>
+        
+                                            <div class="h-500" *ngIf="selectedTimePeriodsType === 'Line Chart'">
+                                                <ngx-charts-line-chart
+                                                    [scheme]="timePeriodsScheme"
+                                                    [results]="lineChart"
+                                                    [xAxis]="showXAxis"
+                                                    [yAxis]="showYAxis"
+                                                    [showXAxisLabel]="showXAxisLabel"
+                                                    [showYAxisLabel]="showYAxisLabel"
+                                                    [legend]="showLegend">
+                                                </ngx-charts-line-chart>
+                                            </div>
+        
+                                        </div>
+        
+                                    </div>
+        
+                                    <div class="timeperiods-distribution" style="margin-left: 25px" fxFlex="45">
+                                        
+                                        <div class="p-20">
+                                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                <div>
+                                                    <span style="font-weight: bold; font-size: large;">
+                                                        Time Periods' Distribution
+                                                    </span><br>
+                                                    <span>Distribution of your products in a time period</span>
+                                                </div>
+        
+                                                <div>
+                                                    <button mat-stroked-button [matMenuTriggerFor]="menu3" style="border-radius: 25px; background-color: white;">
+                                                        {{selectedTimePeriodsDistribution}}
+                                                    </button>
+                                                    <mat-menu #menu3="matMenu">
+                                                        <button mat-menu-item (click)="viewTimeOption('06.00 - 08.59')">06.00 - 08.59</button>
+                                                        <button mat-menu-item (click)="viewTimeOption('09.00 - 11.59')">09.00 - 11.59</button>
+                                                        <button mat-menu-item (click)="viewTimeOption('12.00 - 14.59')">12.00 - 14.59</button>
+                                                        <button mat-menu-item (click)="viewTimeOption('15.00 - 17.59')">15.00 - 17.59</button>
+                                                        <button mat-menu-item (click)="viewTimeOption('18.00 - 19.59')">18.00 - 19.59</button>
+                                                    </mat-menu>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="graph-visualization" fxLayout="column" fxLayoutAlign="space-evenly center">
+        
+                                            <div class="h-300">
+                                                <ngx-charts-pie-chart
+                                                    *fuseIfOnDom
+                                                    [scheme]="timePeriodsScheme"
+                                                    [results]="timeDistributionChart"
+                                                    [labels]="showLabels"
+                                                    [doughnut]="true">
+                                                </ngx-charts-pie-chart>
+                                            </div>
+        
+                                            <div class="timedistribution-numbers" style="text-align: center; font-size: initial; font-weight: 600;">
+                                                <div style="margin-top: 5px; margin-bottom: 5px; color: #189ab4;">
+                                                    <span>{{valueOneLabel}} {{stationValueOne}} | {{stationValueOnePercent}}%</span>
+                                                </div>
+        
+                                                <mat-divider></mat-divider>
+        
+                                                <div style="margin-top: 5px; color: #75e6da">
+                                                    <span>{{valueTwoLabel}} {{stationValueTwo}} | {{stationValueTwoPercent}}%</span>
+                                                </div>
+
+                                                <mat-divider></mat-divider>
+        
+                                                <div style="margin-top: 5px; margin-bottom: 20px; color: #75e6da">
+                                                    <span>Total: {{stationTotal}}</span>
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+        
+                                    </div>
+
+                                </div>
+
+                                <br>
+
+                                <div class="p-20">
+                                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div>
+                                            <span style="font-weight: bold; font-size: large;">
+                                                Monthly Statistics
+                                            </span><br>
+                                            <span>Monthly statistical summary of this station</span>
+                                        </div>
+
+                                        <div>
+                                            <button mat-stroked-button [matMenuTriggerFor]="menu10" style="border-radius: 25px; background-color: white;">
+                                                Month: {{selectedMonth}}
+                                            </button>
+                                            <mat-menu #menu10="matMenu">
+                                                <button mat-menu-item value="1" (click)="viewMonthOption('1')">January</button>
+                                                <button mat-menu-item value="2" (click)="viewMonthOption('2')">February</button>
+                                                <button mat-menu-item value="3" (click)="viewMonthOption('3')">March</button>
+                                                <button mat-menu-item value="4" (click)="viewMonthOption('4')">April</button>
+                                                <button mat-menu-item value="5" (click)="viewMonthOption('5')">May</button>
+                                                <button mat-menu-item value="6" (click)="viewMonthOption('6')">June</button>
+                                                <button mat-menu-item value="7" (click)="viewMonthOption('7')">July</button>
+                                                <button mat-menu-item value="8" (click)="viewMonthOption('8')">August</button>
+                                                <button mat-menu-item value="9" (click)="viewMonthOption('9')">September</button>
+                                                <button mat-menu-item value="10" (click)="viewMonthOption('10')">October</button>
+                                                <button mat-menu-item value="11" (click)="viewMonthOption('11')">November</button>
+                                                <button mat-menu-item value="12" (click)="viewMonthOption('12')">December</button>
+                                            </mat-menu>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="graph-visualization">
+
+                                    <div class="p-20"></div>
+                                    
+                                    <div class="h-500">
+                                        <!-- [xAxisLabel]="xAxisLabel_PU2001_MonthlyBarChart"
+                                        [yAxisLabel]="yAxisLabel_PU2001" -->
+                                        <ngx-charts-line-chart
+                                            [scheme]="distributionScheme"
+                                            [results]="monthlyChart"
+                                            [xAxis]="showXAxis"
+                                            [yAxis]="showYAxis"
+                                            [showXAxisLabel]="showXAxisLabel"
+                                            [showYAxisLabel]="showYAxisLabel"
+                                            [legend]="showLegend">
+                                        </ngx-charts-line-chart>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="stationName === 'Hot Oven' || stationName === 'Cold Oven'">
+
+                                <div class="p-20">
+                                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                                        <div>
+                                            <span style="font-weight: bold; font-size: large;">
+                                                Temperature IoT Box
+                                            </span><br>
+                                            <span>Average temperatures in a 10-minute time gap</span>
+                                        </div>
+        
+                                        <div class="h1 font-weight-300" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>Select Hour</mat-label>
+                                                <mat-select [(value)]="selectedTempTimePeriods" (selectionChange)="createTemperatureDisplays(selectedTempTimePeriods)">
+                                                    <mat-option value="8">8.00 - 9.00</mat-option>
+                                                    <mat-option value="9">9.00 - 10.00</mat-option>
+                                                    <mat-option value="10">10.00 - 11.00</mat-option>
+                                                    <mat-option value="11">11.00 - 12.00</mat-option>
+                                                    <mat-option value="12">12.00 - 13.00</mat-option>
+                                                    <mat-option value="13">13.00 - 14.00</mat-option>
+                                                    <mat-option value="14">14.00 - 15.00</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                
+                                </div>
+        
+                                <div class="graph-visualization">
+        
+                                    <div class="p-20"></div>
+        
+                                    <div class="h-600">
+                                        <ngx-charts-bar-vertical
+                                            [results]="tempBarChart"
+                                            [xAxis]="showXAxis"
+                                            [yAxis]="showYAxis"
+                                            [showXAxisLabel]="showXAxisLabel"
+                                            [showYAxisLabel]="showYAxisLabel"
+                                            [legend]="showLegend">
+                                            <ng-template #tooltipTemplate let-model="model">
+                                                <span>
+                                                    Average Temperature: {{model.value}} °C
+                                                </span>
+                                            </ng-template>
+                                        </ngx-charts-bar-vertical>
+                                    </div>
+                                
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- /End of Distribution Displays -->
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /End of template -->
+
+    </div>
+
+</div>

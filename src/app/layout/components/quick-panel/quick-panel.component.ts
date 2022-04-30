@@ -14,7 +14,7 @@ export class QuickPanelComponent {
     events: any[];
     notes: any[];
     settings: any;
-    stations: any[];
+    stations: any[] = [];
 
     /**
      * Constructor
@@ -34,15 +34,22 @@ export class QuickPanelComponent {
     }
 
     onLoadStations(): void {
-        this.http.get(`${environment.api}/station/`,
-            {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                })
-            }
-        ).subscribe((res: any) => {
-            this.stations = res.data;
-        });
+        // this.http.get(`${environment.api}/station/`,
+        //     {
+        //         headers: new HttpHeaders({
+        //             'Content-Type': 'application/json',
+        //         })
+        //     }
+        // ).subscribe((res: any) => {
+        //     this.stations = res.data;
+        // });
+
+        this.stations.push({id: 1, name: "PU2001 (Injection)"});
+        this.stations.push({id: 2, name: "PU2003 (Injection)"});
+        this.stations.push({id: 3, name: "Lasting Out / Lasting Conveyor"});
+        this.stations.push({id: 4, name: "Lasting In / Check-in Point"});
+        this.stations.push({id: 5, name: "Temperature IoT Box: Chiller Machine"})
+        this.stations.push({id: 6, name: "Temperature IoT Box: Heat Setting Machine"})
     }
 
     onUrl(): void {

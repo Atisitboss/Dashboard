@@ -19,20 +19,26 @@ import {AppComponent} from 'app/app.component';
 import {LayoutModule} from 'app/layout/layout.module';
 import {ServiceWorkerModule} from '@angular/service-worker';
 import {environment} from '../environments/environment';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {ExportAsModule} from 'ngx-export-as';
 
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'home',
         pathMatch: 'full',
     },
     {
-        path: 'dashboard',
-        loadChildren: () => import('./main/dashboard/dashboard.module').then(m => m.DashboardModule),
+        path: 'dashboard/analytics',
+        loadChildren: () => import('./main/dashboard/analytics/analytics.module').then(m => m.AnalyticsModule),
     },
     {
-        path: '**',
-        redirectTo: 'dashboard'
+        path: 'dashboard/project',
+        loadChildren: () => import('./main/dashboard/project/project.module').then(m => m.ProjectModule),
+    },
+    {
+        path: 'home',
+        loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule),
     }
 ];
 
@@ -64,7 +70,10 @@ const appRoutes: Routes = [
 
         // App modules
         LayoutModule,
-        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+
+        NgxChartsModule,
+        ExportAsModule
     ],
     bootstrap: [
         AppComponent

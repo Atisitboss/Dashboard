@@ -48,11 +48,27 @@ $fuse-navy: (
     )
 );
 
+$fuse-custom: (
+    50: #0D1B2A,
+    100: #1B263B,
+    200: #415A77,
+    300: #778DA9,
+    400: #E0E1DD,
+    contrast: (
+        50: $light-primary-text,
+        100: $light-primary-text,
+        200: $light-primary-text,
+        300: $dark-primary-text,
+        400: $dark-primary-text
+    )
+);
+
 // Generate Fuse color classes for custom palettes
 $custom_palettes: (
     fuse-white: $fuse-white,
     fuse-black: $fuse-black,
-    fuse-navy: $fuse-navy
+    fuse-navy: $fuse-navy,
+    fuse-custom: $fuse-custom
 );
 
 @include fuse-color-classes($custom_palettes);
@@ -94,7 +110,7 @@ $typography: mat-typography-config(
 // -----------------------------------------------------------------------------------------------------
 
 // Define the primary, accent and warn palettes
-$default-primary-palette: mat-palette($fuse-navy);
+$default-primary-palette: mat-palette($fuse-custom, 50, 300, 200);
 $default-accent-palette: mat-palette($mat-light-blue, 600, 400, 700);
 $default-warn-palette: mat-palette($mat-red);
 

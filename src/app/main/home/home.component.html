@@ -1,0 +1,49 @@
+<div id="dashboard-home" class="page-layout simple right-sidebar" fxLayout="row">
+
+    <!-- CONTAINER -->
+    <div class="container" fusePerfectScrollbar>
+
+        <!-- HEADER (Profile Picture + Name + Buttons) -->
+        <div class="header p-36" fxLayout="column" fxLayoutAlign="end"> 
+
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row" 
+                fxLayoutAlign.gt-sm="space-between end">
+
+                <div class="user-info" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+                    fxLayoutAlign.gt-sm="start center">
+                    <img class="profile-image avatar huge" src="assets/images/avatars/Velazquez.jpg"
+                        [@animate]="{value:'',params:{delay:'50ms',scale:'0.2'}}">
+                    <div class="name" [@animate]="{value:'',params:{delay:'100ms',x:'-25px'}}">
+                        Welcome Back!
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <mat-tab-group dynamicHeight="true">
+
+                <!-- OVERVIEW TAB -->
+                <mat-tab label="Overview">
+                    <profile-overview></profile-overview>
+                </mat-tab>
+
+                <!-- ABOUT TAB -->
+                <mat-tab label="About">
+                    <profile-about></profile-about>
+                </mat-tab>
+
+            </mat-tab-group>
+
+        </div>
+        <!-- /CONTENT -->
+
+    </div>
+    <!-- /CONTAINER -->
+
+</div>
